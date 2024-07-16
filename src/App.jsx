@@ -5,6 +5,7 @@ import React from "react";
 
 function App() {
   const [newTodo, setNewTodo] = React.useState("");
+  const [todoList, setTodoList] = React.useState([]);
 
   return (
     <div>
@@ -13,7 +14,7 @@ function App() {
       <p>
         Searching for <strong>{newTodo}</strong>
       </p>
-      <TodoList />
+      <TodoList todoList={todoList} />
     </div>
   );
 }
