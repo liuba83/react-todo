@@ -10,6 +10,10 @@ function AddTodoForm({ onAddTodo }) {
 
   function handleAddTodo(event) {
     event.preventDefault();
+    if(todoTitle==="") {
+      alert("You have to write a todo")
+      return
+    }
     console.log(todoTitle);
     onAddTodo({
       title: todoTitle,
