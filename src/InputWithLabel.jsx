@@ -1,7 +1,7 @@
-function InputWithLabel({todoTitle, handleTitleChange, label}) {
+function InputWithLabel({todoTitle, handleTitleChange, children}) {
   return (
     <>
-      <label htmlFor="todoTitle">{label} </label>
+      <label htmlFor="todoTitle">{children} </label>
       <input
         name="title"
         type="text"
