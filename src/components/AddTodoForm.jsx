@@ -1,5 +1,6 @@
 import React from "react";
 import InputWithLabel from "./InputWithLabel";
+import propTypes from 'prop-types';
 
 function AddTodoForm({ onAddTodo }) {
   const [todoTitle, setTodoTitle] = React.useState("");
@@ -12,20 +13,18 @@ function AddTodoForm({ onAddTodo }) {
   function handleAddTodo(event) {
     event.preventDefault();
     if (todoTitle === "") {
-      alert("You have to write a todo");
-      return;
+        alert("You have to write a todo");
+        return;
     }
-    console.log(todoTitle);
     onAddTodo({
-      title: todoTitle,
-      id: Date.now(),
+        title: todoTitle,
     });
     setTodoTitle("");
-  }
+}
 
   return (
     <>
-      <p className="">Title</p>
+      <p>Title</p>
       <form onSubmit={handleAddTodo}>
         <InputWithLabel
           todoTitle={todoTitle}
@@ -36,5 +35,9 @@ function AddTodoForm({ onAddTodo }) {
     </>
   );
 }
+
+AddTodoForm.propTypes = {
+  onAddTodo: propTypes.func.isRequired,
+};
 
 export default AddTodoForm;
