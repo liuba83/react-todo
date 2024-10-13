@@ -19,13 +19,21 @@ function App() {
       },
     };
     try {
-      const response = await fetch(baseUrl+'?view=Grid%20view&sort[0][field]=title&sort[0][direction]=asc', options);
+      const response = await fetch(baseUrl, options); 
       if (!response.ok) {
         const message = `Error: ${response.status}`;
         throw new Error(message);
       }
       const data = await response.json();
-      const todos = data.records.map((todo) => {
+      const sortedRecords = data.records.sort((a, b) => {
+        const titleA = a.fields.title;
+        const titleB = b.fields.title;
+        if (titleA < titleB) return -1;
+        if (titleA === titleB) return 0;
+        if (titleA > titleB) return 1;
+      });
+
+      const todos = sortedRecords.map((todo) => {
         const newTodo = {
           id: todo.id,
           title: todo.fields.title,
