@@ -19,7 +19,7 @@ function App() {
       },
     };
     try {
-      const response = await fetch(baseUrl, options);
+      const response = await fetch(baseUrl+'?view=Grid%20view&sort[0][field]=title&sort[0][direction]=asc', options);
       if (!response.ok) {
         const message = `Error: ${response.status}`;
         throw new Error(message);
