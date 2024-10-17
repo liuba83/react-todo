@@ -19,21 +19,80 @@ function App() {
       },
     };
     try {
-      const response = await fetch(baseUrl, options); 
+      const response = await fetch(baseUrl, options);
       if (!response.ok) {
         const message = `Error: ${response.status}`;
         throw new Error(message);
       }
       const data = await response.json();
-      const sortedRecords = data.records.sort((a, b) => {
-        const titleA = a.fields.title;
-        const titleB = b.fields.title;
-        if (titleA < titleB) return -1;
-        if (titleA === titleB) return 0;
-        if (titleA > titleB) return 1;
-      });
 
-      const todos = sortedRecords.map((todo) => {
+      const todos = data.records.map((todo) => {
+        const newTodo = {
+          id: todo.id,
+          title: todo.fields.title,
+        };
+        return newTodo;
+      });
+      setTodoList(todos);
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  const sortByAsc = async () => {
+    const options = {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${import.meta.env.VITE_AIRTABLE_API_TOKEN}`,
+      },
+    };
+    try {
+      const response = await fetch(
+        baseUrl +
+          "?view=Grid%20view&sort[0][field]=title&sort[0][direction]=asc",
+        options
+      );
+      if (!response.ok) {
+        const message = `Error: ${response.status}`;
+        throw new Error(message);
+      }
+      const data = await response.json();
+
+      const todos = data.records.map((todo) => {
+        const newTodo = {
+          id: todo.id,
+          title: todo.fields.title,
+        };
+        return newTodo;
+      });
+      setTodoList(todos);
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  const sortByDesc = async () => {
+    const options = {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${import.meta.env.VITE_AIRTABLE_API_TOKEN}`,
+      },
+    };
+    try {
+      const response = await fetch(
+        baseUrl +
+          "?view=Grid%20view&sort[0][field]=title&sort[0][direction]=desc",
+        options
+      );
+      if (!response.ok) {
+        const message = `Error: ${response.status}`;
+        throw new Error(message);
+      }
+      const data = await response.json();
+
+      const todos = data.records.map((todo) => {
         const newTodo = {
           id: todo.id,
           title: todo.fields.title,
@@ -154,7 +213,20 @@ function App() {
           path="/"
           element={
             <>
-              <h1>Todo List</h1>
+            <h1>Todo List</h1>
+              <div className="container">
+              <p>Title</p>
+                <div>
+                  <i
+                    onClick={sortByAsc}
+                    className="fa-solid fa-arrow-down-a-z sort-icon"
+                  ></i>
+                  <i
+                    onClick={sortByDesc}
+                    className="fa-solid fa-arrow-up-z-a sort-icon"
+                  ></i>
+                </div>
+              </div>
               <AddTodoForm onAddTodo={addTodo} />
               {isLoading ? (
                 <p>Loading...</p>
